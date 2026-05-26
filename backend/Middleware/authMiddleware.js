@@ -15,6 +15,7 @@ const verifyToken = (req, res, next) => {
         message: "No token found",
       });
     }
+    console.log("Verifying Token:", process.env.ACCESS_SECRET);
 
     const decoded = jwt.verify(
       token,

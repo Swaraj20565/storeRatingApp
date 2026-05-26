@@ -50,12 +50,10 @@ const createRating = async (req, res) => {
 
 };
 const getRating = async (req, res) => {
-
+      console.log("Received request to get rating with query:", req.query);
   try {
 
-    const {
-      storeId
-    } = req.body;
+    const { storeId } = req.query;
 
     const userId = req.user.id;
 
@@ -64,10 +62,35 @@ const getRating = async (req, res) => {
       userId
     });
 
-    return res.status(201).json({
+     const ratings = await prisma.rating.findMany({
+       where: {
+       storeId: Number(storeId),
+      },
+     });
+
+     const store = await prisma.store.findUnique({
+  where: {
+    id: Number(storeId),
+  },
+});
+
+     console.log("Ratings for Store ID",store);
+
+console.log(ratings.length);
+const sum = ratings.reduce((total, item) => total + item.rating, 0);
+
+const average =
+  ratings.length > 0 ? sum / ratings.length : 0;
+
+console.log("Sum:", sum);
+console.log("Average:", average);
+
+    return res.status(200).json({
       success: true,
-      message: "Rating added successfully",
-      rating: newRating,
+      AverageRating: average.toFixed(1),
+      length: ratings.length,
+      store: store,
+      ratings: ratings,
     });
 
   } catch (error) {
@@ -80,7 +103,6 @@ const getRating = async (req, res) => {
     });
 
   }
-
 };
 module.exports = {
   createRating,getRating
