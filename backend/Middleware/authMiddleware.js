@@ -20,7 +20,7 @@ const verifyToken = (req, res, next) => {
       token,
       process.env.ACCESS_SECRET
     );
-
+    console.log("Decoded Token Data:", decoded);
     req.user = decoded;
 
     next();
