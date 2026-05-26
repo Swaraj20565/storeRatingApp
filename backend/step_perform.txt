@@ -1,0 +1,37 @@
+Step 1:- 
+✔ Database created
+✔ Migration applied
+✔ Prisma Client generated
+
+1.1 - Go to Postgres and Create - db
+1.2 - Create Modal - and Create-Schema 
+1.3 - Migration - Converting Prisma schema changes into actual PostgreSQL database tables/columns.
+          -Prisma Schema - only a blueprint.
+          -Database tables are NOT created yet
+        Migration
+        -Run Command -npx prisma migrate dev --name init
+        - Prisma generates SQL like: Create Table Table_name ...
+        - Prisma Schema  <---->  PostgreSQL Database
+
+        (Go Postgres --> Schema --> Table ....)
+
+
+#Signup
+
+UI
+ ↓
+Send Email + Password
+ ↓
+Validate Data
+ ↓
+Hash Password
+ ↓
+Store User
+ ↓
+Generate Access Token
+ ↓
+Generate Refresh Token
+ ↓
+Send Tokens in HttpOnly Cookies
+ ↓
+User Logged In
