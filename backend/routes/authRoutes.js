@@ -3,8 +3,13 @@ const router = express.Router();
 
 const { signup, login,logout } = require("../controllers/authController");
 const {
-  createStore,
+  createStore
 } = require("../controllers/storeController");
+
+const {
+  ProfileStore
+} = require("../controllers/authController");
+
 
 router.post("/signup", signup);
 
@@ -13,10 +18,10 @@ router.get("/logout", logout);
 
 const authMiddleware = require("../middleware/authMiddleware");
 
-// router.post(
-//   "/create",
-// //   authMiddleware,
-//   createStore
-// );
+router.get(
+  "/profile",
+  authMiddleware,
+  ProfileStore
+);
 
 module.exports = router;

@@ -104,6 +104,75 @@ console.log("Average:", average);
 
   }
 };
+const getRatingAll = async (req, res) => {
+      console.log("Received request to get rating with query:", req.query);
+  try {
+
+    const { storeId } = req.query;
+
+    const userId = req.user.id;
+
+    console.log("Received rating data:", {
+      storeId,
+      userId
+    });
+
+     const ratings = await prisma.rating.findMany({
+       where: {
+       storeId: Number(storeId),
+      },
+     });
+
+
+
+
+console.log(ratings.length);
+const result = [];
+
+for (const r of ratings) {
+  console.log("Rating value:", r.rating);
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: r.userId,
+    },
+  });
+
+  console.log("User for rating:", user);
+
+  const users = {
+    user: user,
+    rating: r.rating,
+    review: r.review,
+    createdAt: r.createdAt,
+  };
+
+  result.push(users);
+}
+
+console.log(result);
+
+    return res.status(200).json({
+      success: true,
+      
+      result: result,
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error"
+    });
+
+  }
+};
+
+
+
+
 module.exports = {
-  createRating,getRating
+  createRating,getRatingAll,getRating
 };

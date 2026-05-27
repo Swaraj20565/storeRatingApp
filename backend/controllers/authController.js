@@ -223,6 +223,54 @@ console.log("Logout Request Received");
     });
   }
 }; 
+
+
+
+const ProfileStore = async (req, res) => {
+
+  try {
+
+    const userId = req.user.id;
+
+    console.log("Received profile data:", {
+   
+      userId
+    });
+
+    // const user = await prisma.user.findUnique({
+    //   where: {
+    //     id: userId,
+    //   },
+    // });
+    const user = await prisma.user.findUnique({
+  where: {
+    id: userId,
+  },
+  select: {
+    id: true,
+    name: true,
+    email: true,
+    role: true,
+    createdAt: true,
+    // password not included
+  },
+});
+    console.log("User Profile Data:", user);
+
+    return res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+
+    console.log(error); 
+  }
+};
+
+
+
+
+
 module.exports = {
-  signup, login, logout
+  signup, login, logout, ProfileStore
 };
